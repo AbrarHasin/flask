@@ -7,7 +7,7 @@ from flask import Flask, jsonify, abort
 
 # from producer import publish
 
-# app = Flask(__name__)
+app = Flask(__name__)
 # app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:root@db/main'
 # CORS(app)
 
