@@ -8,7 +8,9 @@ sudo apt install python3-flask
 
 # Docker compose commands
 
-docker-compose up --build   (permission issue use 'sudo')
+docker-compose up --build (permission issue use 'sudo')
+
+docker image prune -a (Removing all unused images)
 
 # Bug Fixes
 

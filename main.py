@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from flask import Flask, jsonify, abort
+# from dataclasses import dataclass
+from flask import Flask, current_app
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import UniqueConstraint
@@ -9,29 +9,36 @@ from sqlalchemy import UniqueConstraint
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:root@db/main'
-CORS(app)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+CORS(app, supports_credentials=True)
 
-@dataclass
+with app.app_context():
+    db.init_app(app)
+    db.session.configure(bind=db.engine)
+
+# @dataclass
 class Product(db.Model):
-    id: int
-    title: str
-    image: str
+    # id: int
+    # title: str
+    # image: str
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=False)
     title = db.Column(db.String(200))
     image = db.Column(db.String(200))
 
 
-@dataclass
+# @dataclass
 class ProductUser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer)
     product_id = db.Column(db.Integer)
 
-    UniqueConstraint('user_id', 'product_id', name='user_product_unique')
+    # UniqueConstraint('user_id', 'product_id', name='user_product_unique')
+    __table_args__ = (db.UniqueConstraint('user_id', 'product_id', name='user_product_unique'),)
+
 
 @app.route('/')
 def index():
