@@ -18,3 +18,7 @@ sudo aa-remove-unknown ( not nessasary to remove all unknown author files and pr
 
 docker container kill $(docker ps -q)
 docker-compose down
+
+# Install Postman to check API (not needed in production server)
+
+sudo snap install postman
