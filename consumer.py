@@ -1,6 +1,6 @@
 # import pika, json
 
-# from main import Product, db
+# from app import Product, db
 
 # params = pika.URLParameters('your_rabbitmq_url')
 
