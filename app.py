@@ -15,7 +15,7 @@ CORS(app)
 db = SQLAlchemy(app)
 
 
-@dataclass
+# @dataclass
 class Product(db.Model):
     id: int
     title: str
@@ -26,7 +26,7 @@ class Product(db.Model):
     image = db.Column(db.String(200))
 
 
-@dataclass
+# @dataclass
 class ProductUser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer)

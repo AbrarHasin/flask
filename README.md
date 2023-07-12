@@ -33,9 +33,9 @@ sudo snap install postman
 
 First go into the backend server: docker-compose exec backend sh
 
-flask db init       to initialize the database
-flask db migrate    to migrate new changes
-flask db upgrade    to upgrade and so on.
+python manager.py db init       #to initialize the database
+python manager.py db migrate    #to migrate new changes to db
+python manager.py db upgrade     to upgrade and so on.
 
 # Issues
 Migrate not working for version issue on Flask
