@@ -37,11 +37,15 @@ python manager.py db init       #to initialize the database
 python manager.py db migrate    #to migrate new changes to db
 python manager.py db upgrade     to upgrade and so on.
 
-# Issues
-Migrate not working for version issue on Flask
+# RabbitMQ configuration and installation (CloudAMPQ)
 
-https://medium.com/nerd-for-tech/developing-a-simple-create-read-update-and-delete-crud-application-using-flask-and-mariadb-f037a5798ee2
+Log in to CloudAMPQ
+Create a team and create a (free tier) instance in it
+Go into the instance
+Copy the AMPQ URI (like amqps://sxhupzyl:***@armadillo.rmq.cloudamqp.com/sxhupzyl) 
 
-https://medium.com/thedevproject/use-flask-cli-to-create-commands-for-your-postgresql-on-heroku-in-6-simple-steps-e8166c024c8d
+My URL:
+amqps://sxhupzyl:6qwtiY5A6CJKv3PTVQY651zRzHAb5nib@armadillo.rmq.cloudamqp.com/sxhupzyl
 
 
+#Environment Variable
