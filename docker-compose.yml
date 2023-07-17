@@ -2,6 +2,8 @@ version: "3"
 services:
   backend:
     restart: always
+    environment:
+      RABBITMQ_URI: "amqps://sxhupzyl:6qwtiY5A6CJKv3PTVQY651zRzHAb5nib@armadillo.rmq.cloudamqp.com/sxhupzyl"
     build:
       context: .
       dockerfile: Dockerfile
