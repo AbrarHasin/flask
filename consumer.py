@@ -1,4 +1,5 @@
 import pika, json
+from app import Product, db
 
 params = pika.URLParameters('amqps://zllzhyav:jHi18yD9N5Rr8VsvY-bVxKiz5nKsBvNX@armadillo.rmq.cloudamqp.com/zllzhyav')
 
@@ -13,9 +14,28 @@ def callback(ch, method, properties, body):
     print('Received in main')
     message = json.loads(body)
     method = message['method']
-    body = message['body']
+    data = message['body']
     print(f"Method: {method}")
-    print(f"Body: {body}")
+    print(f"Data: {data}")
+
+    if method == 'product_created':
+        product = Product(id=data['id'], title=data['title'], image=data['image'])
+        db.session.add(product)
+        db.session.commit()
+        print('Product Created')
+
+    elif method == 'product_updated':
+        product = Product.query.get(data['id'])
+        product.title = data['title']
+        product.image = data['image']
+        db.session.commit()
+        print('Product Updated')
+
+    elif method == 'product_deleted':
+        product = Product.query.get(data)
+        db.session.delete(product)
+        db.session.commit()
+        print('Product Deleted')
 
 
 channel.basic_consume(queue='main', on_message_callback=callback, auto_ack=True)
