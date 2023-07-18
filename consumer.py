@@ -15,8 +15,8 @@ def callback(ch, method, properties, body):
     message = json.loads(body)
     method = message['method']
     data = message['body']
-    print(f"Method: {method}")
-    print(f"Data: {data}")
+    print(f"Data:{method} Datatype: {type(method)}")
+    print(f"Data:{data['id']} Datatype: {type(data['id'])}")
 
     if method == 'product_created':
         product = Product(id=data['id'], title=data['title'], image=data['image'])
