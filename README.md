@@ -1,3 +1,8 @@
+# Clone inside a folder named django:
+Why it is needed. Because Docker-compose creates service names like: "parent.folder.name"_"service.name" 
+So django service will be named "django_django"
+and will use "http://django_django:8000" in other container code
+
 # flask_microservice
 
 Flask API connected with Django 'microservice_python'
@@ -47,4 +52,9 @@ Copy the AMPQ URI (like amqps://sxhupzyl:***@armadillo.rmq.cloudamqp.com/sxhupzy
 My URL:
 amqps://sxhupzyl:6qwtiY5A6CJKv3PTVQY651zRzHAb5nib@armadillo.rmq.cloudamqp.com/sxhupzyl
 
-#Environment Variable
+# Create the Docker network:
+Before running the containers, we need to create the external network (my_network) that will be shared by both the "admin" and "main" folders.
+
+docker network create my_network
+
+# first run django app then flask app 

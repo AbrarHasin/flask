@@ -5,17 +5,19 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import UniqueConstraint
 import requests
 
+from producer import publish
+
 # from producer import publish
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:root@db/main'
+app.config["SQLALCHEMY_DATABASE_URI"] = 'mysql://root:root@flask_db/main'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 CORS(app)
 
 db = SQLAlchemy(app)
 
 
-# @dataclass
+@dataclass
 class Product(db.Model):
     id: int
     title: str
@@ -26,42 +28,44 @@ class Product(db.Model):
     image = db.Column(db.String(200))
 
 
-# @dataclass
+@dataclass
 class ProductUser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer)
     product_id = db.Column(db.Integer)
 
-    UniqueConstraint('user_id', 'product_id', name='user_product_unique')
+    __table_args__ = (
+        UniqueConstraint('user_id', 'product_id', name='user_product_unique'),
+    )
 
-@app.route('/')
-def index():
-    return 'Hello enthusiast'
-
-
-# @app.route('/api/products')
+# @app.route('/')
 # def index():
-#     return jsonify(Product.query.all())
+#     return 'Hello enthusiast'
 
 
-# @app.route('/api/products/<int:id>/like', methods=['POST'])
-# def like(id):
-#     req = requests.get('http://docker.for.mac.localhost:8000/api/user')
-#     json = req.json()
+@app.route('/api/products')
+def index():
+    return jsonify(Product.query.all())
 
-#     try:
-#         productUser = ProductUser(user_id=json['id'], product_id=id)
-#         db.session.add(productUser)
-#         db.session.commit()
 
-#         publish('product_liked', id)
-#     except:
-#         abort(400, 'You already liked this product')
+@app.route('/api/products/<int:id>/like', methods=['POST'])
+def like(id):
+    req = requests.get('http://django:8000/api/user')
+    json = jsonify(req.json())
+    return json
+    
+    # try:
+    #     productUser = ProductUser(user_id=json['id'], product_id=id)
+    #     db.session.add(productUser)
+    #     db.session.commit()
 
-#     return jsonify({
-#         'message': 'success'
-#     })
+    #     publish('product_liked', id)
+    # except:
+    #     abort(400, 'You already liked this product')
 
+    # return jsonify({
+    #     'message': 'success'
+    # })
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

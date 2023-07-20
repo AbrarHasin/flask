@@ -1,17 +1,16 @@
-import os
-import pika
-import json
+import pika, json
 
-params = pika.URLParameters(
-    'amqps://zllzhyav:jHi18yD9N5Rr8VsvY-bVxKiz5nKsBvNX@armadillo.rmq.cloudamqp.com/zllzhyav')
-# params = pika.URLParameters(os.getenv("RABBITMQ_URI"))
+params = pika.URLParameters('amqps://zllzhyav:jHi18yD9N5Rr8VsvY-bVxKiz5nKsBvNX@armadillo.rmq.cloudamqp.com/zllzhyav')
 
 connection = pika.BlockingConnection(params)
 
 channel = connection.channel()
 
-
 def publish(method, body):
-    properties = pika.BasicProperties(method)
-    channel.basic_publish(exchange='', routing_key='admin',
-                          body=json.dumps(body), properties=properties)
+    properties = pika.BasicProperties(content_type='application/json',
+            content_encoding='utf-8',
+            headers={'key': 'value'},
+            delivery_mode = 1,
+            )
+    message = {'method': method, 'body': body}
+    channel.basic_publish(exchange='', routing_key='admin', body=json.dumps(message), properties=properties)
