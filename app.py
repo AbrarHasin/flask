@@ -31,8 +31,8 @@ class Product(db.Model):
 @dataclass
 class ProductUser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer)
-    product_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, primary_key=True)
 
     __table_args__ = (
         UniqueConstraint('user_id', 'product_id', name='user_product_unique'),
@@ -51,21 +51,20 @@ def index():
 @app.route('/api/products/<int:id>/like', methods=['POST'])
 def like(id):
     req = requests.get('http://django:8000/api/user')
-    json = jsonify(req.json())
-    return json
+    json = req.json()
     
-    # try:
-    #     productUser = ProductUser(user_id=json['id'], product_id=id)
-    #     db.session.add(productUser)
-    #     db.session.commit()
+    try:
+        productUser = ProductUser(user_id=json['id'], product_id=id)
+        db.session.add(productUser)
+        db.session.commit()
 
-    #     publish('product_liked', id)
-    # except:
-    #     abort(400, 'You already liked this product')
+        publish('product_liked', id)
+    except:
+        abort(400, 'You already liked this product')
 
-    # return jsonify({
-    #     'message': 'success'
-    # })
+    return jsonify({
+        'message': 'success'
+    })
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
