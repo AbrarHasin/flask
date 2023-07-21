@@ -1,7 +1,7 @@
 # Clone inside a folder named django:
 Why it is needed. Because Docker-compose creates service names like: "parent.folder.name"_"service.name" 
-So django service will be named "django_django"
-and will use "http://django_django:8000" in other container code
+So django service will be named "django"
+and will use "http://django:8000" in other container code
 
 # flask_microservice
 
@@ -11,11 +11,30 @@ Flask API connected with Django 'microservice_python'
 
 sudo apt install python3-flask
 
+# Create the Docker network:
+Before running the containers, we need to create the external network (my_network) that will be shared by both the "admin" and "main" folders.
+
+docker network create my_shared_network
+
+# first run django app then flask app 
+
 # Docker compose commands
 
 docker-compose up --build (permission issue use 'sudo')
 
+docker-compose down
+
 docker image prune -a (Removing all unused images)
+
+
+# Migrate Database
+
+First go into the backend server: docker-compose exec backend sh
+
+python manager.py db init       #to initialize the database
+python manager.py db migrate    #to migrate new changes to db
+python manager.py db upgrade     to upgrade and so on.
+
 
 # Bug Fixes
 
@@ -33,15 +52,6 @@ docker-compose exec backend sh
 
 sudo snap install postman
 
-
-# Migrate Database
-
-First go into the backend server: docker-compose exec backend sh
-
-python manager.py db init       #to initialize the database
-python manager.py db migrate    #to migrate new changes to db
-python manager.py db upgrade     to upgrade and so on.
-
 # RabbitMQ configuration and installation (CloudAMPQ)
 
 Log in to CloudAMPQ
@@ -51,10 +61,3 @@ Copy the AMPQ URI (like amqps://sxhupzyl:***@armadillo.rmq.cloudamqp.com/sxhupzy
 
 My URL:
 amqps://sxhupzyl:6qwtiY5A6CJKv3PTVQY651zRzHAb5nib@armadillo.rmq.cloudamqp.com/sxhupzyl
-
-# Create the Docker network:
-Before running the containers, we need to create the external network (my_network) that will be shared by both the "admin" and "main" folders.
-
-docker network create my_network
-
-# first run django app then flask app 
