@@ -44,5 +44,4 @@ services:
 
 networks:
   my_network:
-    external:
-      name: my_shared_network
+    external: true

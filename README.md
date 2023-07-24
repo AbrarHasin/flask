@@ -14,7 +14,7 @@ sudo apt install python3-flask
 # Create the Docker network:
 Before running the containers, we need to create the external network (my_network) that will be shared by both the "admin" and "main" folders.
 
-docker network create my_shared_network
+docker network create my_network
 
 # first run django app then flask app 
 
