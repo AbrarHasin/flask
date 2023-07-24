@@ -2,6 +2,8 @@ import pika, json
 
 params = pika.URLParameters('amqps://zllzhyav:jHi18yD9N5Rr8VsvY-bVxKiz5nKsBvNX@armadillo.rmq.cloudamqp.com/zllzhyav')
 
+params.socket_timeout = 10 # Set the socket timeout higher (0.25 is default) needed more for Docker/Distributed system
+
 connection = pika.BlockingConnection(params)
 
 channel = connection.channel()
